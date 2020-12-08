@@ -48,7 +48,7 @@ def setup(screen, etc):
 
 def draw(screen, etc):
     '''
-    this is run on a loop and flashes a single frame to the screen at its
+    this is run on a loop and flashes a single frame to the screen at it's
         conclusion
         
     'etc' is the included eyesy library that does hardware things like listen
@@ -92,25 +92,36 @@ def draw(screen, etc):
 
     # prepare to draw text   
     font = pygame.font.SysFont("freemono", 24)
-    score = font.render("snek lemnth: "+ str(snake_max_length), True, color_info)
-    tempo = font.render("tempo gate: "+ str(tempo_gate), True, color_info)
-    game_timer_display = font.render("time not dead: "+ str(game_timer) + 's', True, color_info)
+    score = font.render(
+        "snek lemnth: "+ str(snake_max_length),
+        True,
+        color_info)
+
+    tempo = font.render(
+        "tempo gate: "+ str(tempo_gate),
+        True,
+        color_info)
+
+    game_timer_display = font.render(
+        "time not dead: "+ str(game_timer) + 's',
+        True,
+        color_info)
     
     # draw that shit
     screen.blit(game_timer_display, (etc.xres/40, etc.yres/40))
     screen.blit(score, (etc.xres/40, 2*etc.yres/40))
     
-    # check for knob state change
+    # draw the tempo gate if knob 1's a wigglin'
     if etc.knob1 != knob_test:
         screen.blit(tempo, (etc.xres/40, 3*etc.yres/40))
 
-    # draw border
+    # draw border but dim
     pygame.draw.rect(
         screen,
         (# rectangle color
-            50 + 150/(abs(etc.audio_in[0])+1),
-            50 + 150/(abs(etc.audio_in[99])+1),
-            50 + 150/(abs(etc.audio_in[50])+1)),
+            25 + 150/(abs(etc.audio_in[0])+1),
+            25 + 150/(abs(etc.audio_in[99])+1),
+            25 + 150/(abs(etc.audio_in[50])+1)),
         (# rectangle position
             0, 0, etc.xres, etc.yres),
         10)
@@ -120,7 +131,7 @@ def draw(screen, etc):
         # check knob state
         knob_test = etc.knob1
     
-        # draw border flashes
+        # draw border but bright
         pygame.draw.rect(
             screen,
             (# rectangle color
@@ -134,55 +145,57 @@ def draw(screen, etc):
         # input corrections for proximity
         for snake_segment in snake_body:
             if snake_body[-1]['x'] + snake_size == snake_segment['x']:
+                # just in case we've removed one already
                 try:
                     movement_options.remove('right')
-                except ValueError as e:
+                except ValueError:
                     pass
             if snake_body[-1]['x'] - snake_size == snake_segment['x']:
                 try:
                     movement_options.remove('left')
-                except ValueError as e:
+                except ValueError:
                     pass
             if snake_body[-1]['y'] - snake_size == snake_segment['y']:
                 try:
                     movement_options.remove('up')
-                except ValueError as e:
+                except ValueError:
                     pass
             if snake_body[-1]['y'] + snake_size == snake_segment['y']:
                 try:
                     movement_options.remove('down')
-                except ValueError as e:
+                except ValueError:
                     pass
-        
-        # choose from remaining calid options 
+
+        # choose from remaining valid options 
         input = random.choice(movement_options)
-        
+
         # input corrections to prevent u-turns
         if input == 'down' and last_input == 'up':
+            # again, just in case we've removed one already
             try:
                 movement_options.remove('down')
                 input = random.choice(movement_options)
-            except ValueError as e:
+            except ValueError:
                     pass
         if input == 'up' and last_input == 'down':
             try:
                 movement_options.remove('up')
                 input = random.choice(movement_options)
-            except ValueError as e:
+            except ValueError:
                     pass
         if input == 'right' and last_input == 'left':
             try:
                 movement_options.remove('right')
                 input = random.choice(movement_options)
-            except ValueError as e:
+            except ValueError:
                     pass
         if input == 'left' and last_input == 'right':
             try:
                 movement_options.remove('left')
                 input = random.choice(movement_options)
-            except ValueError as e:
+            except ValueError:
                     pass
-        
+
         # log input for comparisons    
         last_input = input
 
@@ -214,7 +227,7 @@ def draw(screen, etc):
             snake_max_length += 1
             food_x = random.randrange(0, etc.xres, snake_size)
             food_y = random.randrange(0, etc.yres, snake_size)
-        
+
         # screen flips
         if snake_body[-1]['x'] < 0:
             snake_body[-1]['x'] = int((etc.xres/snake_size))*snake_size
@@ -224,7 +237,7 @@ def draw(screen, etc):
             snake_body[-1]['y'] = int((etc.yres/snake_size)-1)*snake_size
         if snake_body[-1]['y'] > etc.yres - 10:
             snake_body[-1]['y'] = 0
-            
+
         # what to do if snek gets too long
         if len(snake_body) >= snake_max_length:
             snake_body.pop(0)
@@ -239,4 +252,3 @@ def draw(screen, etc):
             food_x = random.randrange(0, etc.xres, snake_size)
             food_y = random.randrange(0, etc.yres, snake_size)
             first_tick = time.time()
-
