@@ -26,8 +26,8 @@ def setup(screen, etc):
     snake_size = etc.yres/10
 
     # pick random starting positions based off of screen size
-    start_x = int(random.randrange(0, etc.xres, snake_size))
-    start_y = int(random.randrange(0, etc.yres, snake_size))
+    start_x = random.randrange(0, etc.xres, snake_size)
+    start_y = random.randrange(0, etc.yres, snake_size)
     food_x = random.randrange(0, etc.xres, snake_size)
     food_y = random.randrange(0, etc.yres, snake_size)
 
@@ -231,11 +231,12 @@ def draw(screen, etc):
 
         # check for failstate and reset
         if collision == True:
-            start_x = int(random.randrange(0, etc.xres, snake_size))
-            start_y = int(random.randrange(0, etc.yres, snake_size))
+            start_x = random.randrange(0, etc.xres, snake_size)
+            start_y = random.randrange(0, etc.yres, snake_size)
             snake_location = {'x':start_x, 'y':start_y}
             snake_body = [snake_location]
             snake_max_length = 5
             food_x = random.randrange(0, etc.xres, snake_size)
             food_y = random.randrange(0, etc.yres, snake_size)
             first_tick = time.time()
+
