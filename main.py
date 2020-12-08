@@ -159,13 +159,29 @@ def draw(screen, etc):
         
         # input corrections to prevent u-turns
         if input == 'down' and last_input == 'up':
-            input = 'up'
+            try:
+                movement_options.remove('down')
+                input = random.choice(movement_options)
+            except ValueError as e:
+                    pass
         if input == 'up' and last_input == 'down':
-            input = 'down'
+            try:
+                movement_options.remove('up')
+                input = random.choice(movement_options)
+            except ValueError as e:
+                    pass
         if input == 'right' and last_input == 'left':
-            input = 'left'
+            try:
+                movement_options.remove('right')
+                input = random.choice(movement_options)
+            except ValueError as e:
+                    pass
         if input == 'left' and last_input == 'right':
-            input = 'right'
+            try:
+                movement_options.remove('left')
+                input = random.choice(movement_options)
+            except ValueError as e:
+                    pass
         
         # log input for comparisons    
         last_input = input
