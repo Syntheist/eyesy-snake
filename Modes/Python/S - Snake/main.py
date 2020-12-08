@@ -91,17 +91,15 @@ def draw(screen, etc):
             (food_x, food_y, snake_size, snake_size))
 
     # prepare to draw text   
-    font = pygame.font.SysFont("freemono", 24)
+    font = pygame.font.SysFont("freemono", 32)
     score = font.render(
         "snek lemnth: "+ str(snake_max_length),
         True,
         color_info)
-
     tempo = font.render(
         "tempo gate: "+ str(tempo_gate),
         True,
         color_info)
-
     game_timer_display = font.render(
         "time not dead: "+ str(game_timer) + 's',
         True,
@@ -109,11 +107,11 @@ def draw(screen, etc):
     
     # draw that shit
     screen.blit(game_timer_display, (etc.xres/40, etc.yres/40))
-    screen.blit(score, (etc.xres/40, 2*etc.yres/40))
+    screen.blit(score, (etc.xres/40, 3*etc.yres/40))
     
     # draw the tempo gate if knob 1's a wigglin'
     if etc.knob1 != knob_test:
-        screen.blit(tempo, (etc.xres/40, 3*etc.yres/40))
+        screen.blit(tempo, (etc.xres/40, 5*etc.yres/40))
 
     # draw border but dim
     pygame.draw.rect(
