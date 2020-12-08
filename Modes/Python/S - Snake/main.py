@@ -165,36 +165,46 @@ def draw(screen, etc):
                     pass
 
         # choose from remaining valid options 
-        input = random.choice(movement_options)
-
+        try:
+            input = random.choice(movement_options)
+        except IndexError:
+            pass
         # input corrections to prevent u-turns
         if input == 'down' and last_input == 'up':
             # again, just in case we've removed one already
             try:
                 movement_options.remove('down')
                 input = random.choice(movement_options)
+            except IndexError:
+                collision = True
             except ValueError:
-                    pass
+                pass
         if input == 'up' and last_input == 'down':
             try:
                 movement_options.remove('up')
                 input = random.choice(movement_options)
+            except IndexError:
+                collision = True
             except ValueError:
-                    pass
+                pass
         if input == 'right' and last_input == 'left':
             try:
                 movement_options.remove('right')
                 input = random.choice(movement_options)
+            except IndexError:
+                collision = True
             except ValueError:
-                    pass
+                pass
         if input == 'left' and last_input == 'right':
             try:
                 movement_options.remove('left')
                 input = random.choice(movement_options)
+            except IndexError:
+                collision = True
             except ValueError:
-                    pass
+                pass
 
-        # log input for comparisons    
+        # log input for comparisons
         last_input = input
 
         # move the snek
