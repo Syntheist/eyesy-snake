@@ -48,7 +48,7 @@ def setup(screen, etc):
 
 def draw(screen, etc):
     '''
-    this is run on a loop and flashes a single frame to the screen at it's
+    this is run on a loop and flashes a single frame to the screen at its
         conclusion
         
     'etc' is the included eyesy library that does hardware things like listen
