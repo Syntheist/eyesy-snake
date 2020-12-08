@@ -61,9 +61,6 @@ def draw(screen, etc):
     # reinit movement options for snek
     movement_options = ['up','down','left','right']
     
-    # init movement
-    input = random.choice(movement_options)
-    
     # gate for detected tempo ticks to reduce false positives
     tempo_gate = round(50 + etc.knob1*50, 2)
 
@@ -133,17 +130,6 @@ def draw(screen, etc):
             (# rectangle position
                 0, 0, etc.xres, etc.yres),
             10)
-        
-        # input corrections to prevent u-turns
-        if input == 'down' and last_input == 'up':
-            input = 'up'
-        if input == 'up' and last_input == 'down':
-            input = 'down'
-        if input == 'right' and last_input == 'left':
-            input = 'left'
-        if input == 'left' and last_input == 'right':
-            input = 'right'
-        last_input = input
 
         # input corrections for proximity
         for snake_segment in snake_body:
@@ -167,15 +153,24 @@ def draw(screen, etc):
                     movement_options.remove('down')
                 except ValueError as e:
                     pass
-                
-        mv = font.render("move options: "+ str(movement_options), True, color_info)
-        screen.blit(mv, (etc.xres/40, 4*etc.yres/40))
+        
+        # choose from remaining calid options 
+        input = random.choice(movement_options)
+        
+        # input corrections to prevent u-turns
+        if input == 'down' and last_input == 'up':
+            input = 'up'
+        if input == 'up' and last_input == 'down':
+            input = 'down'
+        if input == 'right' and last_input == 'left':
+            input = 'left'
+        if input == 'left' and last_input == 'right':
+            input = 'right'
+        
+        # log input for comparisons    
+        last_input = input
 
-        # what to do if snek gets too long
-        if len(snake_body) >= snake_max_length:
-            snake_body.pop(0)
-
-        # snek controls
+        # move the snek
         if input  == 'up':
             snake_body.append({
                 'x': snake_body[-1]['x'],
@@ -192,7 +187,8 @@ def draw(screen, etc):
             snake_body.append({
                 'x': snake_body[-1]['x'] - snake_size,
                 'y': snake_body[-1]['y']})
-                
+
+        # check for duplicate segments after move
         for snake_segment in snake_body:
             if snake_body.count(snake_segment) > 1:
                 collision = True
@@ -212,6 +208,10 @@ def draw(screen, etc):
             snake_body[-1]['y'] = int((etc.yres/snake_size)-1)*snake_size
         if snake_body[-1]['y'] > etc.yres - 10:
             snake_body[-1]['y'] = 0
+            
+        # what to do if snek gets too long
+        if len(snake_body) >= snake_max_length:
+            snake_body.pop(0)
 
         # check for failstate and reset
         if collision == True:
