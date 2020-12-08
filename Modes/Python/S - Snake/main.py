@@ -34,7 +34,7 @@ def setup(screen, etc):
     # snake movement tracking
     snake_location = {'x':start_x, 'y':start_y}
     snake_body = [snake_location]
-    snake_max_length = 5
+    snake_max_length = 6
     
     # time
     last_tick = time.time()
@@ -93,7 +93,7 @@ def draw(screen, etc):
     # prepare to draw text   
     font = pygame.font.SysFont("freemono", 32)
     score = font.render(
-        "snek lemnth: "+ str(snake_max_length),
+        "snek lemnth: "+ str(snake_max_length - 1),
         True,
         color_info)
     tempo = font.render(
